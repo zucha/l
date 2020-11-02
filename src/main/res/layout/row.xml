@@ -1,41 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        tools:srcCompat="@tools:sample/avatars"
-        android:layout_marginLeft="18pt"
+    <TextView
+        android:id="@+id/rowRemove"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/remove"
+        android:gravity="center_vertical"
+        android:textSize="26sp"
+        android:textColor="@color/white"
+        android:paddingLeft="10dp"
+        android:background="@color/warning"
         />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16pt"
-        android:layout_marginLeft="16pt"
-        android:layout_weight="1"
-        android:orientation="vertical" />
-
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/rowTextViewId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:layout_weight="1"
+        android:background="@color/colorAccent"
+
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
         android:text="TextView"
         android:textSize="36sp"
         android:visibility="visible" />
-</LinearLayout>
+</FrameLayout>

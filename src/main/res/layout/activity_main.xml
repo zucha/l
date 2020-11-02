@@ -10,4 +10,19 @@
         android:id="@+id/mainRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/buttonOpenForm"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@android:drawable/ic_menu_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/mainRecycler" />
+
+    <include layout="@layout/form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/itemForm"
+        android:visibility="gone"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

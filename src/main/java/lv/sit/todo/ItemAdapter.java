@@ -1,18 +1,18 @@
 package lv.sit.todo;
 
-import android.app.Application;
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-import lv.sit.todo.db.Database;
-import lv.sit.todo.db.ItemDao;
+import java.util.List;
+
+import lv.sit.todo.db.DeleteThread;
+import lv.sit.todo.db.Item;
 
 /**
  * @link https://www.geeksforgeeks.org/generics-in-java/
@@ -23,28 +23,31 @@ import lv.sit.todo.db.ItemDao;
  */
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     /**
-     *
+     * Signleton instance
      */
-    private Context context;
+    private static ItemAdapter instance;
 
-    public ItemAdapter (Context context)
+    public int count = 0;
+
+    public List<Item> items;
+
+    /**
+     * singleton
+     */
+    public static ItemAdapter getInstance()
     {
-        Log.d(MainActivity.LOG_TAG, "Item adapter contructor");
-        this.context = context;
+        if (instance == null)
+        {
+            instance = new ItemAdapter();
+        }
 
-
+        return instance;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        // this.context = MainActivity.context;
-
-        Log.d(MainActivity.LOG_TAG, "Create viwv holder");
-        Log.d(MainActivity.LOG_TAG, this.context.getClass().toString());
-
-        // Create a new view.
+        // Create new row view.
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row, parent, false);
 
@@ -52,27 +55,58 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     /**
-     * binds the data to the TextView in each row
-     * @param holder
-     * @param position
+     * Binds the data to the TextView in each row
+     * @param holder row nested views holder
+     * @param position position in recycler list
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // String animal = mData.get(position);
-        holder.rowTexView.setText("Test text");
+        holder.rowRemoveView.setOnClickListener((View view) -> {
+            Log.d(MainActivity.LOG_TAG, "Delete clicked " + position);
+
+            /*
+            ViewGroup.LayoutParams params = holder.rowLayout.getLayoutParams();
+            params.width = 0;
+            params.height = 0;
+            holder.rowLayout.setLayoutParams(params);
+            */
+            // holder.rowLayout.setVisibility(View.GONE);
+
+            new DeleteThread(holder.item).start();
+        });
+
+        holder.rowTexView.setOnClickListener((View view) -> {
+            Log.d(MainActivity.LOG_TAG, "Row clicked " + position);
+
+            int marginValue = 300;
+
+            if (holder.expanded)
+            {
+                marginValue = 0;
+            }
+
+            holder.expanded = !holder.expanded;
+
+            ViewGroup.MarginLayoutParams marginLayoutParams = new ViewGroup.MarginLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(marginLayoutParams);
+
+            layoutParams.setMargins(marginValue, 0, -1 * marginValue, 0);
+
+            view.setLayoutParams(layoutParams);
+        });
+
+        holder.item = items.get(position);
+        holder.rowTexView.setText(holder.item.name);
     }
 
     @Override
     public int getItemCount() {
-
-        Database db = Room.inMemoryDatabaseBuilder(MainActivity.context, Database.class).build();
-        ItemDao itemDao = db.getItemDao();
-
-        return itemDao.getCount();
+        return this.count;
     }
 
     /**
-     *
+     * Hold information about row items
      */
     public class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -81,11 +115,33 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
          */
         public TextView rowTexView;
 
-        public ViewHolder(@NonNull View itemView) {
+        /**
+         * is row slided
+         */
+        public boolean expanded = false;
 
+        /**
+         * DAO item
+         */
+        public Item item;
+
+        /**
+         * remove button
+         */
+        public TextView rowRemoveView;
+
+        /**
+         * main row view
+         */
+        public View rowLayout;
+
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            rowLayout = itemView;
+
             rowTexView = (TextView) itemView.findViewById(R.id.rowTextViewId);
+            rowRemoveView = (TextView) itemView.findViewById(R.id.rowRemove);
         }
     }
 }
