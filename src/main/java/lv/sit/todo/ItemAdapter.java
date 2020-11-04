@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
@@ -78,7 +79,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.rowTexView.setOnClickListener((View view) -> {
             Log.d(MainActivity.LOG_TAG, "Row clicked " + position);
 
-            int marginValue = 300;
+            int marginValue = 180;
 
             if (holder.expanded)
             {
@@ -94,6 +95,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             layoutParams.setMargins(marginValue, 0, -1 * marginValue, 0);
 
             view.setLayoutParams(layoutParams);
+        });
+
+        holder.rowTexView.setOnLongClickListener((View view) -> {
+            // Edit this
+            FragmentManager fm = MainActivity.getInstance().getSupportFragmentManager();
+            ItemDialog itemDialog = new ItemDialog(holder.item);
+            itemDialog.show(fm, "test_tag");
+            return true;
         });
 
         holder.item = items.get(position);

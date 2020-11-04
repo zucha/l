@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Todo List3</string>
+    <string name="app_name">Todo bag</string>
     <string name="remove">Remove</string>
     <string name="create">Create</string>
     <string name="update">Update</string>

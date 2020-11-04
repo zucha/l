@@ -1,0 +1,25 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle" >
+
+            // solid fills in the shape with the color you want
+            <solid android:color="@color/warning" />
+
+            // stroke gives the outline with the specified width and color
+            <!--<stroke
+                android:width="1px"
+                android:color="@color/colorAccent" />-->
+
+        </shape>
+    </item>
+
+    <item android:bottom="1.5dp">
+
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle" >
+            <solid android:color="@color/colorAccent" />
+        </shape>
+    </item>
+</layer-list>

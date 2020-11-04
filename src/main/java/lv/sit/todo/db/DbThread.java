@@ -14,10 +14,14 @@ import lv.sit.todo.MainActivity;
  * Gets data from db
  */
 public class DbThread extends Thread {
-    public DbThread (Context appContext, Callable v)
+    public DbThread (Callable v)
     {
         super(() -> {
-            Database db = Room.databaseBuilder(appContext, Database.class, "test").build();
+            Database db = Room.databaseBuilder(
+                    MainActivity.getInstance().getApplicationContext(),
+                    Database.class,
+                    Database.dbName).build();
+
             ItemDao itemDao = db.getItemDao();
 
             ItemAdapter.getInstance().count = itemDao.getCount();

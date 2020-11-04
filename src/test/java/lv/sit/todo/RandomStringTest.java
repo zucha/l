@@ -8,12 +8,30 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import androidx.collection.ArrayMap;
 
+import lv.sit.todo.db.Item;
+
 /**
  * Random string for random
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class RandomStringTest {
+
+    @Test
+    public void testNull ()
+    {
+        Item item = null; //= new Item();
+
+        if (item == null)
+        {
+            assertTrue(true);
+        } else
+        {
+            assertTrue(false);
+        }
+
+
+    }
 
     @Test
     public void testMap ()
