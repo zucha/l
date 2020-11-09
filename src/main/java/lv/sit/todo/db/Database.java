@@ -1,8 +1,11 @@
 package lv.sit.todo.db;
 
+import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@androidx.room.Database(entities = {Item.class}, version = 1)
+import lv.sit.todo.MainActivity;
+
+@androidx.room.Database(entities = {Item.class}, version = 2)
 public abstract class Database extends RoomDatabase {
     /**
      * Database name
@@ -14,4 +17,15 @@ public abstract class Database extends RoomDatabase {
      * @return dao object
      */
     public abstract ItemDao getItemDao();
+
+    /**
+     * Create db instance
+     */
+    public static final Database getInstance ()
+    {
+        return Room.databaseBuilder(
+                MainActivity.getInstance().getApplicationContext(),
+                Database.class,
+                Database.dbName).build();
+    }
 }

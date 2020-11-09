@@ -3,6 +3,7 @@ package lv.sit.todo;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -18,6 +19,7 @@ import lv.sit.todo.db.Database;
 import lv.sit.todo.db.DbThread;
 import lv.sit.todo.db.Item;
 import lv.sit.todo.db.ItemDao;
+import lv.sit.todo.db.OrderThread;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         registerFormActions ();
 
-
         Toast.makeText(this, "App loaded", Toast.LENGTH_SHORT).show();
     }
 
@@ -76,8 +77,11 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.mainRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
         ItemAdapter adapter = ItemAdapter.getInstance();
-        // adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
+
+        ItemHelperCallback dragDropCallback = new ItemHelperCallback();
+        ItemTouchHelper touchHelper = new ItemTouchHelper(dragDropCallback);
+        touchHelper.attachToRecyclerView(recyclerView);
 
         new DbThread(() -> {
             Log.d(LOG_TAG, "Do refresh: " + ItemAdapter.getInstance().count);
@@ -95,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 Toast.makeText(getApplicationContext(), "Data loaded", Toast.LENGTH_SHORT).show();
             });
+
+            new OrderThread().start();
 
             return null;
         }).start();

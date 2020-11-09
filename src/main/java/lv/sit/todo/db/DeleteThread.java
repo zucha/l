@@ -14,10 +14,7 @@ public class DeleteThread extends Thread {
     public DeleteThread (Item item)
     {
         super(() -> {
-            Database db = Room.databaseBuilder(
-                    MainActivity.getInstance().getApplicationContext(),
-                    Database.class,
-                    Database.dbName).build();
+            Database db = Database.getInstance();
 
             ItemDao itemDao = db.getItemDao();
 
@@ -30,7 +27,6 @@ public class DeleteThread extends Thread {
                 ItemAdapter.getInstance().notifyDataSetChanged();
                 Toast.makeText(MainActivity.getInstance().getApplicationContext(), "Item deleted", Toast.LENGTH_SHORT).show();
             });
-
         });
     }
 }

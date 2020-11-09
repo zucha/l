@@ -13,7 +13,7 @@ public interface ItemDao {
     @Query("SELECT count(*) FROM item;")
     int getCount();
 
-    @Query("SELECT * FROM item")
+    @Query("SELECT * FROM item ORDER BY position;")
     List<Item> getAll();
 
     @Query("SELECT * FROM item where id=:id;")

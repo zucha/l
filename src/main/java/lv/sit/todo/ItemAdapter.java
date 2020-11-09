@@ -51,7 +51,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         // Create new row view.
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row, parent, false);
-
         return new ViewHolder(v);
     }
 
@@ -97,13 +96,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             view.setLayoutParams(layoutParams);
         });
 
-        holder.rowTexView.setOnLongClickListener((View view) -> {
+        // holder.rowTexView.setOn
+        /*holder.rowTexView.setOnLongClickListener((View view) -> {
             // Edit this
             FragmentManager fm = MainActivity.getInstance().getSupportFragmentManager();
             ItemDialog itemDialog = new ItemDialog(holder.item);
             itemDialog.show(fm, "test_tag");
             return true;
-        });
+        });*/
 
         holder.item = items.get(position);
         holder.rowTexView.setText(holder.item.name);

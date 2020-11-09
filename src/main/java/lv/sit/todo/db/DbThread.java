@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.room.Room;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.concurrent.Callable;
 
@@ -17,10 +19,24 @@ public class DbThread extends Thread {
     public DbThread (Callable v)
     {
         super(() -> {
+            final Migration migration1_2 = new Migration(1, 2) {
+                @Override
+                public void migrate (SupportSQLiteDatabase database)
+                {
+                    database.execSQL("ALTER TABLE item "
+                            + " ADD COLUMN position INTEGER NOT NULL DEFAULT 0;");
+
+                    database.execSQL("ALTER TABLE item "
+                            + " ADD COLUMN color TEXT;");
+                }
+            };
+
             Database db = Room.databaseBuilder(
                     MainActivity.getInstance().getApplicationContext(),
                     Database.class,
-                    Database.dbName).build();
+                    Database.dbName)
+                    .addMigrations(migration1_2)
+                    .build();
 
             ItemDao itemDao = db.getItemDao();
 

@@ -18,6 +18,7 @@ import androidx.room.Room;
 import lv.sit.todo.db.Database;
 import lv.sit.todo.db.Item;
 import lv.sit.todo.db.ItemDao;
+import lv.sit.todo.db.OrderThread;
 
 public class ItemDialog extends DialogFragment {
 
@@ -134,11 +135,7 @@ public class ItemDialog extends DialogFragment {
     private void _insertItem (Item item)
     {
         new Thread(() -> {
-            Database db = Room.databaseBuilder(
-                    MainActivity.getInstance().getApplicationContext(),
-                    Database.class,
-                    Database.dbName
-            ).build();
+            Database db = Database.getInstance();
 
             ItemDao itemDao = db.getItemDao();
 
@@ -150,6 +147,9 @@ public class ItemDialog extends DialogFragment {
             MainActivity.getInstance().runOnUiThread(() -> {
                 ItemAdapter.getInstance().notifyDataSetChanged();
             });
+
+            new OrderThread().start();
+            
         }).start();
     }
 

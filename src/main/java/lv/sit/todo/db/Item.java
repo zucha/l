@@ -12,4 +12,10 @@ public class Item
 
     @ColumnInfo(name = "name")
     public String name;
+
+    @ColumnInfo(name = "position")
+    public int position = 0;
+
+    @ColumnInfo(name = "color")
+    public String color;
 }
