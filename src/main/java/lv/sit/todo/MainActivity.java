@@ -10,6 +10,7 @@ import androidx.room.Room;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
 
         registerFormActions ();
 
+        Button b = findViewById(R.id.testButton);
+        b.setOnClickListener((View v) -> {
+            Log.d(LOG_TAG, "test button click");
+            ItemAdapter.getInstance().notifyItemChanged(4);
+            ItemAdapter.getInstance().notifyAllRows();
+        });
+
         Toast.makeText(this, "App loaded", Toast.LENGTH_SHORT).show();
     }
 
@@ -82,6 +90,11 @@ public class MainActivity extends AppCompatActivity {
         ItemHelperCallback dragDropCallback = new ItemHelperCallback();
         ItemTouchHelper touchHelper = new ItemTouchHelper(dragDropCallback);
         touchHelper.attachToRecyclerView(recyclerView);
+
+        SwipeMenuListener swipeMenuLisener = new SwipeMenuListener (recyclerView);
+        swipeMenuLisener.onDelete ((Item item) -> {
+            Log.d(LOG_TAG, "On delete callback: " + item.id);
+        });
 
         new DbThread(() -> {
             Log.d(LOG_TAG, "Do refresh: " + ItemAdapter.getInstance().count);

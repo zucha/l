@@ -5,18 +5,6 @@
     android:background="@drawable/row_background">
 
     <TextView
-        android:id="@+id/rowRemove"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/remove"
-        android:gravity="center_vertical"
-        android:textSize="14sp"
-        android:textColor="@color/white"
-        android:paddingLeft="10dp"
-        android:background="@color/warning"
-        />
-
-    <TextView
         android:id="@+id/rowTextViewId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -21,14 +21,14 @@ public class OrderThread extends Thread {
 
             int count = ItemAdapter.getInstance().getItemCount();
 
-            Log.d(MainActivity.LOG_TAG, "Item count" + count);
+            // Log.d(MainActivity.LOG_TAG, "Item count" + count);
 
             RecyclerView recyclerView = MainActivity.getInstance().findViewById(R.id.mainRecycler);
 
             ItemDao itemDao = db.getItemDao();
 
             for (int i = 0; i < count; i++) {
-                Log.d(MainActivity.LOG_TAG, "Item position " + i);
+                // Log.d(MainActivity.LOG_TAG, "Item position " + i);
 
                 ItemAdapter.ViewHolder viewHolder = (ItemAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
 
@@ -37,7 +37,7 @@ public class OrderThread extends Thread {
                     Log.w(MainActivity.LOG_TAG, "Item id is null");
                 } else
                 {
-                    Log.d(MainActivity.LOG_TAG, "Item id " + viewHolder.item.name);
+                    // Log.d(MainActivity.LOG_TAG, "Item id " + viewHolder.item.name);
                     viewHolder.item.position = i+1;
 
                     itemDao.update(viewHolder.item);

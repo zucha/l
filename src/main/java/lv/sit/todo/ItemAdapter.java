@@ -1,7 +1,10 @@
 package lv.sit.todo;
 
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -11,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-
 import lv.sit.todo.db.DeleteThread;
 import lv.sit.todo.db.Item;
 
@@ -61,21 +63,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.rowRemoveView.setOnClickListener((View view) -> {
-            Log.d(MainActivity.LOG_TAG, "Delete clicked " + position);
-
-            /*
-            ViewGroup.LayoutParams params = holder.rowLayout.getLayoutParams();
-            params.width = 0;
-            params.height = 0;
-            holder.rowLayout.setLayoutParams(params);
-            */
-            // holder.rowLayout.setVisibility(View.GONE);
-
-            new DeleteThread(holder.item).start();
-        });
-
-        holder.rowTexView.setOnClickListener((View view) -> {
+/*        holder.rowTexView.setOnClickListener((View view) -> {
             Log.d(MainActivity.LOG_TAG, "Row clicked " + position);
 
             int marginValue = 180;
@@ -94,16 +82,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             layoutParams.setMargins(marginValue, 0, -1 * marginValue, 0);
 
             view.setLayoutParams(layoutParams);
-        });
+        });*/
 
         // holder.rowTexView.setOn
-        /*holder.rowTexView.setOnLongClickListener((View view) -> {
+        holder.rowTexView.setOnLongClickListener((View view) -> {
             // Edit this
             FragmentManager fm = MainActivity.getInstance().getSupportFragmentManager();
             ItemDialog itemDialog = new ItemDialog(holder.item);
             itemDialog.show(fm, "test_tag");
             return true;
-        });*/
+        });
 
         holder.item = items.get(position);
         holder.rowTexView.setText(holder.item.name);
@@ -135,14 +123,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         public Item item;
 
         /**
-         * remove button
-         */
-        public TextView rowRemoveView;
-
-        /**
          * main row view
          */
         public View rowLayout;
+
+        /**
+         * delete swipe menu background bounds
+         */
+        public Rect deleteBounds;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -150,7 +138,40 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             rowLayout = itemView;
 
             rowTexView = (TextView) itemView.findViewById(R.id.rowTextViewId);
-            rowRemoveView = (TextView) itemView.findViewById(R.id.rowRemove);
+
+            rowTexView.setOnTouchListener((View v, MotionEvent event) -> {
+
+                // Log.d(MainActivity.LOG_TAG, "Viewholder touch 2");
+                // Log.d(MainActivity.LOG_TAG, "state " + event.getButtonState());
+                return false;
+            });
+        }
+    }
+
+    /**
+     * Item changed
+     * Set back swiped items
+     * @return void
+     */
+    public void notifyAllRows ()
+    {
+        RecyclerView recyclerView = (RecyclerView) MainActivity.getInstance().findViewById(R.id.mainRecycler);
+        for (int i=0 ; i < items.size(); i++)
+        {
+            ItemAdapter.ViewHolder holder = (ItemAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
+
+            if (holder == null)
+            {
+                continue;
+            }
+            if (!holder.expanded)
+            {
+                continue;
+            }
+
+            holder.expanded = false;
+
+            notifyItemChanged(i);
         }
     }
 }
