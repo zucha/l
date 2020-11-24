@@ -18,10 +18,9 @@ public class SwipeMenuListener {
     private float _x, _y;
 
     /**
-     * delete callback
+     * delete , edit callback
      */
-    private SwipeMenuListener.IAction _deleteAction;
-
+    private SwipeMenuListener.IAction _deleteAction, _editAction;
 
     SwipeMenuListener (RecyclerView recyclerView) {
 
@@ -51,12 +50,7 @@ public class SwipeMenuListener {
         {
             ItemAdapter.ViewHolder holder = (ItemAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
 
-            if (holder.deleteBounds == null)
-            {
-                continue;
-            }
-
-            if (holder.deleteBounds.contains((int) _x, (int) _y))
+            if (holder.deleteBounds != null && holder.deleteBounds.contains((int) _x, (int) _y))
             {
                 if (this._deleteAction != null)
                 {
@@ -64,6 +58,16 @@ public class SwipeMenuListener {
                 }
 
                 Log.d(MainActivity.LOG_TAG, "Delete button touched");
+            }
+
+            if (holder.editBounds != null && holder.editBounds.contains((int) _x, (int) _y))
+            {
+                if (this._editAction != null)
+                {
+                    _editAction.onClick(holder.item);
+                }
+
+                Log.d(MainActivity.LOG_TAG, "Edit button touched");
             }
         }
     }
@@ -75,6 +79,15 @@ public class SwipeMenuListener {
     public void onDelete (IAction action)
     {
         this._deleteAction = action;
+    }
+
+    /**
+     * on edit
+     * Set edit callback
+     */
+    public void onEdit (IAction action)
+    {
+        this._editAction = action;
     }
 
     /**

@@ -1,25 +1,19 @@
 package lv.sit.todo;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import lv.sit.todo.db.Database;
 import lv.sit.todo.db.DbThread;
+import lv.sit.todo.db.DeleteThread;
 import lv.sit.todo.db.Item;
-import lv.sit.todo.db.ItemDao;
 import lv.sit.todo.db.OrderThread;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,18 +40,12 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        /*TextView view = findViewById(R.id.textView2);
-        view.setText("000");*/
-        //
-
         registerRecycleView ();
 
         registerFormActions ();
 
         Button b = findViewById(R.id.testButton);
         b.setOnClickListener((View v) -> {
-            Log.d(LOG_TAG, "test button click");
-            ItemAdapter.getInstance().notifyItemChanged(4);
             ItemAdapter.getInstance().notifyAllRows();
         });
 
@@ -94,6 +82,13 @@ public class MainActivity extends AppCompatActivity {
         SwipeMenuListener swipeMenuLisener = new SwipeMenuListener (recyclerView);
         swipeMenuLisener.onDelete ((Item item) -> {
             Log.d(LOG_TAG, "On delete callback: " + item.id);
+            (new DeleteThread(item)).start();
+        });
+        swipeMenuLisener.onEdit ((Item item) -> {
+            Log.d(LOG_TAG, "On edit callback: " + item.id);
+            FragmentManager fm = MainActivity.getInstance().getSupportFragmentManager();
+            ItemDialog itemDialog = new ItemDialog(item);
+            itemDialog.show(fm, "test_tag");
         });
 
         new DbThread(() -> {

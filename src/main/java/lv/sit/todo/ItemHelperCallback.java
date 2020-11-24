@@ -5,10 +5,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,8 +23,8 @@ import lv.sit.todo.db.OrderThread;
  */
 public class ItemHelperCallback extends ItemTouchHelper.Callback  {
     private final ColorDrawable background;
-    private Drawable icon;
-    private TextView textView;
+    private Drawable _iconDelete;
+    private Drawable _iconEdit;
 
     private static final int BUTTON_SIZE = 180;
 
@@ -41,14 +37,8 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
 
         background = new ColorDrawable(color);
 
-        icon = ContextCompat.getDrawable(MainActivity.getInstance(), R.drawable.ic_delete);
-
-        textView = new TextView(MainActivity.getInstance());
-        textView.setText(R.string.remove);
-        color = MainActivity.getInstance().getResources().getColor(R.color.white, null );
-        textView.setTextColor(color);
-        color = MainActivity.getInstance().getResources().getColor(R.color.colorAccent, null );
-        textView.setBackgroundColor(color);
+        _iconDelete = ContextCompat.getDrawable(MainActivity.getInstance(), R.drawable.ic_delete);
+        _iconEdit = ContextCompat.getDrawable(MainActivity.getInstance(), R.drawable.ic_config);
     }
 
 
@@ -64,41 +54,56 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
         background.setBounds(0,0,0,0);
 
         holder.deleteBounds = new Rect(0,0,0,0);
+        holder.editBounds = new Rect(0,0,0,0);
 
         if (dX > 0 )
         {
-            if (dX > BUTTON_SIZE )
+            if (dX > BUTTON_SIZE * 2 )
             {
                 holder.expanded = true;
-                dX = BUTTON_SIZE;
+                dX = BUTTON_SIZE * 2;
             }
 
             int top = holder.itemView.getTop();
             int bottom = holder.itemView.getBottom();
 
-            Rect bounds = new Rect(0, top, (int) dX, bottom);
+            Rect backgroundBounds = new Rect(0, top, (int) dX, bottom);
 
-            background.setBounds(bounds);
+            background.setBounds(backgroundBounds);
             background.draw(c);
 
-            holder.deleteBounds.set(bounds);
+            Rect deleteBackgroundBounds = new Rect(backgroundBounds);
+            deleteBackgroundBounds.right /= 2;
+            holder.deleteBounds.set(deleteBackgroundBounds);
+
+            Rect editBackgroundBounds = new Rect(backgroundBounds);
+            editBackgroundBounds.left = backgroundBounds.right/2;
+            holder.editBounds.set(editBackgroundBounds);
 
             if (dX > 100)
             {
-                bounds.left += 50;
-                bounds.top += 50;
-                bounds.right -= 50;
-                bounds.bottom -= 50;
-                icon.setBounds(bounds);
-                icon.draw(c);
+                Rect deleteIconBounds = new Rect(backgroundBounds);
+                deleteIconBounds.left += 50;
+                deleteIconBounds.top += 50;
+                deleteIconBounds.right -= 50 + BUTTON_SIZE;
+                deleteIconBounds.bottom -= 50;
+                _iconDelete.setBounds(deleteIconBounds);
+                _iconDelete.draw(c);
+
+                Rect editIconBounds = new Rect(backgroundBounds);
+                editIconBounds.left += 50 + BUTTON_SIZE;
+                editIconBounds.top += 50;
+                editIconBounds.right -= 50;
+                editIconBounds.bottom -= 50;
+                _iconEdit.setBounds(editIconBounds);
+                _iconEdit.draw(c);
             }
-            // textView.draw(c);
         }
 
-        if (dX < 0)
+        /*if (dX < 0)
         {
             dX = 0;
-        }
+        }*/
 
         super.onChildDraw(c, recyclerView, holder, dX, dY, actionState, isCurrentlyActive);
     }
@@ -106,7 +111,7 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         return makeMovementFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END ,
-            ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+            ItemTouchHelper.RIGHT);
     }
 
     @Override

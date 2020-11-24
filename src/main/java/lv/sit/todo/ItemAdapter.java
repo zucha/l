@@ -85,13 +85,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         });*/
 
         // holder.rowTexView.setOn
-        holder.rowTexView.setOnLongClickListener((View view) -> {
+/*        holder.rowTexView.setOnLongClickListener((View view) -> {
             // Edit this
             FragmentManager fm = MainActivity.getInstance().getSupportFragmentManager();
             ItemDialog itemDialog = new ItemDialog(holder.item);
             itemDialog.show(fm, "test_tag");
             return true;
-        });
+        });*/
 
         holder.item = items.get(position);
         holder.rowTexView.setText(holder.item.name);
@@ -132,19 +132,25 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
          */
         public Rect deleteBounds;
 
+        /**
+         * edit swipe menu background bounds
+         */
+        public Rect editBounds;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             rowLayout = itemView;
 
             rowTexView = (TextView) itemView.findViewById(R.id.rowTextViewId);
+/*
 
             rowTexView.setOnTouchListener((View v, MotionEvent event) -> {
 
                 // Log.d(MainActivity.LOG_TAG, "Viewholder touch 2");
                 // Log.d(MainActivity.LOG_TAG, "state " + event.getButtonState());
                 return false;
-            });
+            });*/
         }
     }
 
