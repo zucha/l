@@ -24,7 +24,7 @@ public class DeleteThread extends Thread {
             ItemAdapter.getInstance().count = itemDao.getCount();
 
             MainActivity.getInstance().runOnUiThread(() -> {
-                ItemAdapter.getInstance().notifyDataSetChanged();
+                ItemAdapter.getInstance().notifyAllRows();
                 Toast.makeText(MainActivity.getInstance().getApplicationContext(), "Item deleted", Toast.LENGTH_SHORT).show();
             });
         });

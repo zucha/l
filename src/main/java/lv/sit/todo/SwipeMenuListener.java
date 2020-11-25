@@ -50,7 +50,16 @@ public class SwipeMenuListener {
         {
             ItemAdapter.ViewHolder holder = (ItemAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
 
-            if (holder.deleteBounds != null && holder.deleteBounds.contains((int) _x, (int) _y))
+            if (holder == null)
+            {
+                continue;
+            }
+            if (holder.deleteBounds.right > 0) {
+                Log.d(MainActivity.LOG_TAG, "Item id: " + holder.item.id);
+                Log.d(MainActivity.LOG_TAG, "Delete bounds: " + holder.deleteBounds.toString());
+            }
+
+            if (holder.deleteBounds.contains((int) _x, (int) _y))
             {
                 if (this._deleteAction != null)
                 {
@@ -60,7 +69,7 @@ public class SwipeMenuListener {
                 Log.d(MainActivity.LOG_TAG, "Delete button touched");
             }
 
-            if (holder.editBounds != null && holder.editBounds.contains((int) _x, (int) _y))
+            if (holder.editBounds.contains((int) _x, (int) _y))
             {
                 if (this._editAction != null)
                 {
@@ -91,7 +100,8 @@ public class SwipeMenuListener {
     }
 
     /**
-     * click action
+     * Click action
+     * Click on swiped row's menu
      */
     @FunctionalInterface
     public interface IAction

@@ -92,14 +92,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         new DbThread(() -> {
-            Log.d(LOG_TAG, "Do refresh: " + ItemAdapter.getInstance().count);
-
-            /*
-            RecyclerView recyclerView = findViewById(R.id.mainRecycler);
-            recyclerView.invalidate();
-            recyclerView.refreshDrawableState();
-            */
-
             runOnUiThread(() -> {
                 ItemAdapter.getInstance().notifyDataSetChanged();
             });

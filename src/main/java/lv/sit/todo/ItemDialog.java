@@ -145,7 +145,7 @@ public class ItemDialog extends DialogFragment {
             ItemAdapter.getInstance().items = itemDao.getAll();
 
             MainActivity.getInstance().runOnUiThread(() -> {
-                ItemAdapter.getInstance().notifyDataSetChanged();
+                ItemAdapter.getInstance().notifyAllRows();
             });
 
             new OrderThread().start();
@@ -170,7 +170,7 @@ public class ItemDialog extends DialogFragment {
             ItemAdapter.getInstance().items = itemDao.getAll();
 
             MainActivity.getInstance().runOnUiThread(() -> {
-                ItemAdapter.getInstance().notifyDataSetChanged();
+                ItemAdapter.getInstance().notifyAllRows();
             });
         }).start();
     }

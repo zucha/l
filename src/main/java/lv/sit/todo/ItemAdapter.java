@@ -143,6 +143,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             rowLayout = itemView;
 
             rowTexView = (TextView) itemView.findViewById(R.id.rowTextViewId);
+
+            deleteBounds = new Rect();
+            editBounds = new Rect();
+
 /*
 
             rowTexView.setOnTouchListener((View v, MotionEvent event) -> {
@@ -155,8 +159,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     /**
-     * Item changed
+     * Item changed / deleted
      * Set back swiped items
+     * @see RecyclerView.Adapter#notifyDataSetChanged()
      * @return void
      */
     public void notifyAllRows ()
@@ -165,6 +170,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         for (int i=0 ; i < items.size(); i++)
         {
             ItemAdapter.ViewHolder holder = (ItemAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
+
+            holder.editBounds = new Rect();
+            holder.deleteBounds = new Rect();
 
             if (holder == null)
             {
@@ -177,7 +185,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
             holder.expanded = false;
 
-            notifyItemChanged(i);
+            // notifyItemChanged(i);
         }
+
+        this.notifyDataSetChanged();
     }
 }
