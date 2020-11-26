@@ -171,9 +171,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         {
             ItemAdapter.ViewHolder holder = (ItemAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
 
-            holder.editBounds = new Rect();
-            holder.deleteBounds = new Rect();
-
             if (holder == null)
             {
                 continue;
@@ -183,9 +180,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 continue;
             }
 
+            holder.editBounds = new Rect();
+            holder.deleteBounds = new Rect();
             holder.expanded = false;
-
-            // notifyItemChanged(i);
         }
 
         this.notifyDataSetChanged();
