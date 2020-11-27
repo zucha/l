@@ -4,19 +4,17 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-
 import lv.sit.todo.db.OrderThread;
 
 /**
  * Helper class for drag n drop
  * Swipe to delete
+ * Special swipe menu buttons
  * @link https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
  * @link https://www.tutorialsbuzz.com/2020/09/Android-RecyclerView-Buttons-Under-Swipe%20-HalfSwipe-Custom.html
  * @link https://github.com/daimajia/AndroidSwipeLayout
@@ -25,8 +23,6 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
     private final ColorDrawable background;
     private Drawable _iconDelete;
     private Drawable _iconEdit;
-
-    private static final int BUTTON_SIZE = 180;
 
     /**
      * Constructor
@@ -58,10 +54,10 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
 
         if (dX > 0 )
         {
-            if (dX > BUTTON_SIZE * 2 )
+            if (dX > _buttonSize(holder) * 2 )
             {
                 holder.expanded = true;
-                dX = BUTTON_SIZE * 2;
+                dX = _buttonSize(holder) * 2;
             }
 
             int top = holder.itemView.getTop();
@@ -85,13 +81,13 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
                 Rect deleteIconBounds = new Rect(backgroundBounds);
                 deleteIconBounds.left += 50;
                 deleteIconBounds.top += 50;
-                deleteIconBounds.right -= 50 + BUTTON_SIZE;
+                deleteIconBounds.right -= 50 + _buttonSize(holder);
                 deleteIconBounds.bottom -= 50;
                 _iconDelete.setBounds(deleteIconBounds);
                 _iconDelete.draw(c);
 
                 Rect editIconBounds = new Rect(backgroundBounds);
-                editIconBounds.left += 50 + BUTTON_SIZE;
+                editIconBounds.left += 50 + _buttonSize(holder);
                 editIconBounds.top += 50;
                 editIconBounds.right -= 50;
                 editIconBounds.bottom -= 50;
@@ -118,8 +114,6 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
     public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
         super.onSelectedChanged(viewHolder, actionState);
 
-        Log.d(MainActivity.LOG_TAG, "On movechanged " + actionState);
-
         if (ItemTouchHelper.ACTION_STATE_IDLE == actionState)
         {
             // store position in db
@@ -129,8 +123,6 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
 
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-        // Log.d(MainActivity.LOG_TAG, "On move");
-
         ItemAdapter.getInstance().notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
 
         return true;
@@ -144,5 +136,24 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
     @Override
     public boolean isItemViewSwipeEnabled() {
         return true;
+    }
+
+    /**
+     * cache row height
+     */
+    private int _rowHeight;
+
+    /**
+     * Size of row height
+     * Determine size to create proportional buttons
+     */
+    private int _buttonSize (ItemAdapter.ViewHolder holder)
+    {
+        if (_rowHeight != 0)
+        {
+            return _rowHeight;
+        }
+
+        return _rowHeight = holder.itemView.getBottom() - holder.itemView.getTop();
     }
 }
