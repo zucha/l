@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:background="@drawable/row_background">
+    android:background="@drawable/bg_row_background"
+    android:id="@+id/rowLayout">
 
     <TextView
         android:id="@+id/rowTextViewId"
@@ -11,11 +12,37 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_weight="1"
-        android:background="@drawable/row_background"
-
+        android:background="@drawable/bg_row_background"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:text="TextView"
         android:textSize="26sp"
+        android:translationX="0px"
         android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/rowButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_config"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_delete"
+            android:visibility="visible" />
+    </LinearLayout>
+
 </FrameLayout>

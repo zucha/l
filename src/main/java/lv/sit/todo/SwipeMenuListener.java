@@ -11,6 +11,7 @@ import lv.sit.todo.db.Item;
 
 /**
  * Helper four swiped menu buttons
+ * @deprecated
  * @author uldis
  */
 public class SwipeMenuListener {
@@ -40,7 +41,6 @@ public class SwipeMenuListener {
 
     /**
      * Extended rows
-     *
      */
     private void _extendedItems ()
     {
@@ -54,10 +54,6 @@ public class SwipeMenuListener {
             {
                 continue;
             }
-            if (holder.deleteBounds.right > 0) {
-                Log.d(MainActivity.LOG_TAG, "Item id: " + holder.item.id);
-                Log.d(MainActivity.LOG_TAG, "Delete bounds: " + holder.deleteBounds.toString());
-            }
 
             if (holder.deleteBounds.contains((int) _x, (int) _y))
             {
@@ -65,8 +61,6 @@ public class SwipeMenuListener {
                 {
                     _deleteAction.onClick(holder.item);
                 }
-
-                Log.d(MainActivity.LOG_TAG, "Delete button touched");
             }
 
             if (holder.editBounds.contains((int) _x, (int) _y))
@@ -75,8 +69,6 @@ public class SwipeMenuListener {
                 {
                     _editAction.onClick(holder.item);
                 }
-
-                Log.d(MainActivity.LOG_TAG, "Edit button touched");
             }
         }
     }

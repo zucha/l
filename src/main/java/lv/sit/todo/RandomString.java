@@ -1,5 +1,8 @@
 package lv.sit.todo;
 
+/**
+ * @deprecated
+ */
 public class RandomString {
     /**
      *

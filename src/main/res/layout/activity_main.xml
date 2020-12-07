@@ -20,22 +20,47 @@
         android:background="#00FFFFFF"
         android:scaleType="centerInside"
         android:src="@drawable/ic_bag_round_plus"
+        android:translationZ="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/mainRecycler" />
 
-    <include layout="@layout/form"
+    <include
+        android:id="@+id/itemForm"
+        layout="@layout/form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/itemForm"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/testButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/mainRecycler"
-        app:layout_constraintStart_toStartOf="@+id/mainRecycler"
-        android:visibility="gone"/>
+        app:layout_constraintStart_toStartOf="@+id/mainRecycler" />
+
+    <LinearLayout
+        android:id="@+id/undoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_black"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="24sp"
+            android:gravity="center"
+            android:text="@string/undo"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="normal" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

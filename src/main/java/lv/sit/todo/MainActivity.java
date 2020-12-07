@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Tag for loging
+     * Tag for logging
      */
     public final static String LOG_TAG = "todoapp";
 
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * Open dialog to edit item
      */
     private void registerFormActions ()
     {
@@ -78,18 +78,6 @@ public class MainActivity extends AppCompatActivity {
         ItemHelperCallback dragDropCallback = new ItemHelperCallback();
         ItemTouchHelper touchHelper = new ItemTouchHelper(dragDropCallback);
         touchHelper.attachToRecyclerView(recyclerView);
-
-        SwipeMenuListener swipeMenuLisener = new SwipeMenuListener (recyclerView);
-        swipeMenuLisener.onDelete ((Item item) -> {
-            Log.d(LOG_TAG, "On delete callback: " + item.id);
-            (new DeleteThread(item)).start();
-        });
-        swipeMenuLisener.onEdit ((Item item) -> {
-            Log.d(LOG_TAG, "On edit callback: " + item.id);
-            FragmentManager fm = MainActivity.getInstance().getSupportFragmentManager();
-            ItemDialog itemDialog = new ItemDialog(item);
-            itemDialog.show(fm, "test_tag");
-        });
 
         new DbThread(() -> {
             runOnUiThread(() -> {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -133,7 +134,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         public Rect deleteBounds;
 
         /**
-         * edit swipe menu background bounds
+         * Edit swipe menu background bounds
          */
         public Rect editBounds;
 
@@ -147,14 +148,25 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             deleteBounds = new Rect();
             editBounds = new Rect();
 
-/*
+            View bgView = (View) itemView.findViewById(R.id.rowLayout);
+            View buttons = (View) itemView.findViewById(R.id.rowButtons);
 
-            rowTexView.setOnTouchListener((View v, MotionEvent event) -> {
+            bgView.setOnTouchListener(new RowSwipe(rowTexView, buttons));
 
-                // Log.d(MainActivity.LOG_TAG, "Viewholder touch 2");
-                // Log.d(MainActivity.LOG_TAG, "state " + event.getButtonState());
-                return false;
-            });*/
+            Button delete = (Button) buttons.findViewById(R.id.deleteButton);
+            Button edit = (Button) buttons.findViewById(R.id.editButton);
+
+            delete.setOnClickListener ((View v) -> {
+                Log.d(MainActivity.LOG_TAG, "On delete callback: " + item.id);
+                (new DeleteThread(item)).start();
+            });
+
+            edit.setOnClickListener ((View v) -> {
+                Log.d(MainActivity.LOG_TAG, "On edit callback: " + item.id);
+                FragmentManager fm = MainActivity.getInstance().getSupportFragmentManager();
+                ItemDialog itemDialog = new ItemDialog(item);
+                itemDialog.show(fm, "test_tag");
+            });
         }
     }
 
@@ -183,8 +195,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             holder.editBounds = new Rect();
             holder.deleteBounds = new Rect();
             holder.expanded = false;
+            this.notifyItemChanged(i);
         }
 
-        this.notifyDataSetChanged();
+        //this.notifyDataSetChanged();
     }
 }

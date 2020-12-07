@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -37,27 +39,72 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
         _iconEdit = ContextCompat.getDrawable(MainActivity.getInstance(), R.drawable.ic_config);
     }
 
-
-
     @Override
-    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+    public void onChildDraw(@NonNull Canvas c,
+                            @NonNull RecyclerView recyclerView,
+                            @NonNull RecyclerView.ViewHolder viewHolder,
+                            float dX, float dY,
+                            int actionState, boolean isCurrentlyActive) {
 
-        // recyclerView.setOnTouchListener();
         ItemAdapter.ViewHolder holder = (ItemAdapter.ViewHolder) viewHolder;
 
-        holder.expanded = false;
+        background.setBounds(0,0,0,0);
+
+        int top = holder.itemView.getTop();
+        int bottom = holder.itemView.getBottom();
+
+        Rect backgroundBounds = new Rect(0, top, (int) dX, bottom);
+
+        background.setBounds(backgroundBounds);
+        background.draw(c);
+
+        if (dX > 100)
+        {
+            dX = 100;
+        }
+
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+    }
+
+    /*@Override
+    public void onChildDraw(@NonNull Canvas c,
+                            @NonNull RecyclerView recyclerView,
+                            @NonNull RecyclerView.ViewHolder viewHolder,
+                            float dX, float dY,
+                            int actionState, boolean isCurrentlyActive) {
+
+        ItemAdapter.ViewHolder holder = (ItemAdapter.ViewHolder) viewHolder;
+
+        Log.d(MainActivity.LOG_TAG, "Child draw sate: " + actionState);
+        // Log.d(MainActivity.LOG_TAG, "child draw active: " + isCurrentlyActive);
+        // Log.d(MainActivity.LOG_TAG, "child draw expanded: " + holder.expanded);
+
+        if (isCurrentlyActive) {
+            holder.expanded = false;
+        }
+
+        if (!isCurrentlyActive && holder.expanded && dX <= _buttonSize(holder) ) {
+            dX = (_buttonSize(holder) * 2);
+        }
 
         background.setBounds(0,0,0,0);
 
         holder.deleteBounds = new Rect(0,0,0,0);
         holder.editBounds = new Rect(0,0,0,0);
 
-        if (dX > 0 )
+        if (holder.expanded && dX == _buttonSize(holder) * 2)
         {
-            if (dX > _buttonSize(holder) * 2 )
+            onSwiped(viewHolder, 8);
+        }
+
+        // Log.d(MainActivity.LOG_TAG, "Dx: " + dX);
+
+        // if (dX > 0 )
+        {
+            if (dX > (_buttonSize(holder) * 2) )
             {
                 holder.expanded = true;
-                dX = _buttonSize(holder) * 2;
+                // dX = _buttonSize(holder) * 2;
             }
 
             int top = holder.itemView.getTop();
@@ -68,17 +115,25 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
             background.setBounds(backgroundBounds);
             background.draw(c);
 
-            Rect deleteBackgroundBounds = new Rect(backgroundBounds);
+            Rect buttonBounds = new Rect(backgroundBounds);
+            if (buttonBounds.right > (_buttonSize(holder) * 2))
+            {
+                buttonBounds.right = _buttonSize(holder) * 2;
+            }
+
+            // Log.d(MainActivity.LOG_TAG, "button bounds: " + buttonBounds.toString());
+
+            Rect deleteBackgroundBounds = new Rect(buttonBounds);
             deleteBackgroundBounds.right /= 2;
             holder.deleteBounds.set(deleteBackgroundBounds);
 
-            Rect editBackgroundBounds = new Rect(backgroundBounds);
-            editBackgroundBounds.left = backgroundBounds.right/2;
+            Rect editBackgroundBounds = new Rect(buttonBounds);
+            editBackgroundBounds.left = buttonBounds.right/2;
             holder.editBounds.set(editBackgroundBounds);
 
             if (dX > 100)
             {
-                Rect deleteIconBounds = new Rect(backgroundBounds);
+                Rect deleteIconBounds = new Rect(buttonBounds);
                 deleteIconBounds.left += 50;
                 deleteIconBounds.top += 50;
                 deleteIconBounds.right -= 50 + _buttonSize(holder);
@@ -86,7 +141,7 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
                 _iconDelete.setBounds(deleteIconBounds);
                 _iconDelete.draw(c);
 
-                Rect editIconBounds = new Rect(backgroundBounds);
+                Rect editIconBounds = new Rect(buttonBounds);
                 editIconBounds.left += 50 + _buttonSize(holder);
                 editIconBounds.top += 50;
                 editIconBounds.right -= 50;
@@ -96,18 +151,17 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
             }
         }
 
-        /*if (dX < 0)
+        *//*if (dX < 0)
         {
             dX = 0;
-        }*/
+        }*//*
 
         super.onChildDraw(c, recyclerView, holder, dX, dY, actionState, isCurrentlyActive);
-    }
+    }*/
 
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        return makeMovementFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END ,
-            ItemTouchHelper.RIGHT);
+        return makeMovementFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, 0);
     }
 
     @Override
@@ -128,23 +182,14 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
         return true;
     }
 
-    @Override
-    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-    }
-
-    @Override
-    public boolean isItemViewSwipeEnabled() {
-        return true;
-    }
-
     /**
-     * cache row height
+     * Cache row height
      */
     private int _rowHeight;
 
     /**
      * Size of row height
+     *
      * Determine size to create proportional buttons
      */
     private int _buttonSize (ItemAdapter.ViewHolder holder)
@@ -155,5 +200,10 @@ public class ItemHelperCallback extends ItemTouchHelper.Callback  {
         }
 
         return _rowHeight = holder.itemView.getBottom() - holder.itemView.getTop();
+    }
+
+    @Override
+    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
     }
 }
