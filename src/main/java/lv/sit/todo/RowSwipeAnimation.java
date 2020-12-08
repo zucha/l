@@ -45,12 +45,15 @@ public class RowSwipeAnimation extends Thread {
 
     private int _tmpVelocity = velocity;
 
+    private ItemAdapter.ViewHolder holder;
+
     /**
      * Constructor
      */
-    public RowSwipeAnimation (View view, View buttons, float x) {
-        this.view = view;
-        this.buttons = buttons;
+    public RowSwipeAnimation (ItemAdapter.ViewHolder holder, float x) {
+        this.holder = holder;
+        this.view = (View) holder.rowTexView;
+        this.buttons = (View) holder.rowLayout.findViewById(R.id.rowButtons);
         pointerX = lastPointerX = x;
         // Log.d(MainActivity.LOG_TAG, "left: " + view.getLeft() + " right: " + view.getRight());
     }
@@ -201,6 +204,7 @@ public class RowSwipeAnimation extends Thread {
      */
     private void swipeToDelete ()
     {
+        holder.onSwipeDelete ();
         lastPointerX = view.getWidth();
         pointerX = view.getTranslationX();
 

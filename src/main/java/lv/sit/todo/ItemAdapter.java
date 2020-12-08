@@ -11,17 +11,20 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
+
 import lv.sit.todo.db.DeleteThread;
 import lv.sit.todo.db.Item;
 
 /**
  * @link https://www.geeksforgeeks.org/generics-in-java/
  * @link https://github.com/android/views-widgets-samples/blob/master/RecyclerView/Application/src/main/java/com/example/android/recyclerview/CustomAdapter.java
- *
+ * <p>
  * Simple example:
  * @link https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example
  */
@@ -38,10 +41,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     /**
      * singleton
      */
-    public static ItemAdapter getInstance()
-    {
-        if (instance == null)
-        {
+    public static ItemAdapter getInstance() {
+        if (instance == null) {
             instance = new ItemAdapter();
         }
 
@@ -59,7 +60,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     /**
      * Binds the data to the TextView in each row
-     * @param holder row nested views holder
+     *
+     * @param holder   row nested views holder
      * @param position position in recycler list
      */
     @Override
@@ -106,8 +108,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     /**
      * Hold information about row items
      */
-    public class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         /**
          * bind row layout text view
          */
@@ -129,15 +130,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         public View rowLayout;
 
         /**
-         * delete swipe menu background bounds
+         * Define viewholder actions
+         *
+         * @param itemView
          */
-        public Rect deleteBounds;
-
-        /**
-         * Edit swipe menu background bounds
-         */
-        public Rect editBounds;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -145,55 +141,51 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
             rowTexView = (TextView) itemView.findViewById(R.id.rowTextViewId);
 
-            deleteBounds = new Rect();
-            editBounds = new Rect();
+            itemView.setOnTouchListener(new RowSwipe(this));
 
-            View bgView = (View) itemView.findViewById(R.id.rowLayout);
-            View buttons = (View) itemView.findViewById(R.id.rowButtons);
+            Button delete = (Button) itemView.findViewById(R.id.deleteButton);
+            Button edit = (Button) itemView.findViewById(R.id.editButton);
 
-            bgView.setOnTouchListener(new RowSwipe(rowTexView, buttons));
-
-            Button delete = (Button) buttons.findViewById(R.id.deleteButton);
-            Button edit = (Button) buttons.findViewById(R.id.editButton);
-
-            delete.setOnClickListener ((View v) -> {
+            delete.setOnClickListener((View v) -> {
                 Log.d(MainActivity.LOG_TAG, "On delete callback: " + item.id);
                 (new DeleteThread(item)).start();
             });
 
-            edit.setOnClickListener ((View v) -> {
+            edit.setOnClickListener((View v) -> {
                 Log.d(MainActivity.LOG_TAG, "On edit callback: " + item.id);
                 FragmentManager fm = MainActivity.getInstance().getSupportFragmentManager();
                 ItemDialog itemDialog = new ItemDialog(item);
                 itemDialog.show(fm, "test_tag");
             });
         }
+
+        /**
+         * When row is swiped out of view to delete item
+         */
+        public void onSwipeDelete() {
+            Log.d(MainActivity.LOG_TAG, "delete item: " + item.id);
+        }
     }
 
     /**
      * Item changed / deleted
      * Set back swiped items
-     * @see RecyclerView.Adapter#notifyDataSetChanged()
+     *
      * @return void
+     * @see RecyclerView.Adapter#notifyDataSetChanged()
      */
-    public void notifyAllRows ()
-    {
+    public void notifyAllRows() {
         RecyclerView recyclerView = (RecyclerView) MainActivity.getInstance().findViewById(R.id.mainRecycler);
-        for (int i=0 ; i < items.size(); i++)
-        {
+        for (int i = 0; i < items.size(); i++) {
             ItemAdapter.ViewHolder holder = (ItemAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
 
-            if (holder == null)
-            {
+            if (holder == null) {
                 continue;
             }
-            if (!holder.expanded)
-            {
+            if (!holder.expanded) {
                 continue;
             }
 
-            holder.editBounds = new Rect();
-            holder.deleteBounds = new Rect();
             holder.expanded = false;
             this.notifyItemChanged(i);
         }

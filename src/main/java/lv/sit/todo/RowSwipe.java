@@ -4,10 +4,13 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class RowSwipe implements View.OnTouchListener  {
+/**
+ * Swipe ItemAdapter row
+ */
+public class RowSwipe implements View.OnTouchListener {
 
     /**
-     * animation thread
+     * Animation thread
      */
     private RowSwipeAnimation animation;
 
@@ -23,23 +26,25 @@ public class RowSwipe implements View.OnTouchListener  {
     private View buttons;
 
     /**
-     * constructor
+     * Item adapter view holder
      */
-    public RowSwipe (View swipeView, View buttons)
-    {
-        this.swipeView = swipeView;
-        this.buttons = buttons;
+    private ItemAdapter.ViewHolder holder;
+
+    /**
+     * Constructor
+     */
+    public RowSwipe(ItemAdapter.ViewHolder holder) {
+        this.holder = holder;
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        Log.d(MainActivity.LOG_TAG, "action: " + event.getAction());
+        // Log.d(MainActivity.LOG_TAG, "action: " + event.getAction());
 
-        switch (event.getAction())
-        {
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                animation = new RowSwipeAnimation(swipeView, buttons, event.getX());
+                animation = new RowSwipeAnimation(holder, event.getX());
                 animation.start();
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -50,7 +55,6 @@ public class RowSwipe implements View.OnTouchListener  {
                 RowSwipeAnimation.setPassive();
                 return false;
         }
-
 
         return true;
     }
