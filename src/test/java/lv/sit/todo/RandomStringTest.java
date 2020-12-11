@@ -3,8 +3,12 @@ package lv.sit.todo;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+
 import java.util.concurrent.Executor;
 import org.junit.Test;
+
+import static java.lang.Thread.sleep;
 import static org.junit.Assert.*;
 import androidx.collection.ArrayMap;
 
@@ -34,21 +38,12 @@ public class RandomStringTest {
     }
 
     @Test
-    public void testMap ()
-    {
+    public void testMap () {
 
         ArrayMap<Integer, String> x = new ArrayMap<Integer, String>();
         x.put(1, "viens");
         assertEquals(1, x.size());
         assertEquals("viens", x.get(1));
-    }
-
-    @Test
-    public void addition_isCorrect()
-    {
-        String x = RandomString.generate();
-        System.out.println(x);
-        assertEquals (10, x.length());
     }
 
     /**
@@ -64,6 +59,41 @@ public class RandomStringTest {
         // Looper
         // Handler
 
+        Thread t = new Thread(() -> {
+            System.out.println("start");
+            try
+            {
 
+                //Log.d(MainActivity.LOG_TAG, "start");
+                for (int i = 0; i < 10; i++) {
+                    sleep(100);
+                }
+
+
+            } catch (InterruptedException e)
+            {
+                System.out.println("interupted 1");
+            }
+
+            System.out.println("end");
+
+        });
+
+        t.start();
+
+        // t.interrupt();
+
+        try
+        {
+            t.join(10000);
+        } catch (InterruptedException e)
+        {
+            System.out.println("interupted 2");
+        }
+
+
+        System.out.println("Ended main");
     }
+
+
 }

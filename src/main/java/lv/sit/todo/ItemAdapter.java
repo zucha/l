@@ -1,23 +1,15 @@
 package lv.sit.todo;
 
-import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
-
 import lv.sit.todo.db.DeleteThread;
 import lv.sit.todo.db.Item;
 
@@ -156,6 +148,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 FragmentManager fm = MainActivity.getInstance().getSupportFragmentManager();
                 ItemDialog itemDialog = new ItemDialog(item);
                 itemDialog.show(fm, "test_tag");
+
+                new RowSwipeAnimation(this).startDrawBack();
             });
         }
 
@@ -163,7 +157,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
          * When row is swiped out of view to delete item
          */
         public void onSwipeDelete() {
-            Log.d(MainActivity.LOG_TAG, "delete item: " + item.id);
+            Undo.set(this);
         }
     }
 
@@ -190,6 +184,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             this.notifyItemChanged(i);
         }
 
-        //this.notifyDataSetChanged();
+        this.notifyDataSetChanged();
+    }
+
+    /**
+     * Default row height
+     * @return row height in pixels
+     */
+    public static int getDefaultRowHeight () {
+        // float factor = holder.itemView.getContext().getResources().getDisplayMetrics().density;
+
+        return (int) Math.ceil(70 * MainActivity.getInstance().getResources().getDisplayMetrics().density);
     }
 }

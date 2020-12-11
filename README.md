@@ -21,11 +21,15 @@ Refactored code. Abandoned swipe with ItemTouchHelper.Callback helper to create 
 buttons and swipe out the row to procede deletion. Swipe has two tresholds - for menu and swipe to delete. Order move up and 
 down still remains with the helper class.
 
+## Undo option
+
+If row is swiped to delete, undo view appears at the botton of the screen. So if you swiped row out accidentaly there is option 
+to undo action. This feature i made with touch gestures (View.OnTouchListener) and threads to make animation.
+
 ## What is next
 
 I have some ideas to improve user experience to make it more useable. So i am ready to go forward, to learn little bit more.
 
-- undo for delete
 - Postpone option
 - color for each item
 - create add button with selector

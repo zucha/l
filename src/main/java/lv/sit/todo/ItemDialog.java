@@ -96,7 +96,7 @@ public class ItemDialog extends DialogFragment {
 
             if (EditorInfo.IME_ACTION_DONE == actionId || EditorInfo.IME_ACTION_UNSPECIFIED == actionId)
             {
-                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+                // imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                 saveItem(value);
                 return true;
             }

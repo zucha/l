@@ -11,7 +11,7 @@ public class DeleteThread extends Thread {
     /**
      * @param item database item
      */
-    public DeleteThread (Item item)
+    public DeleteThread(Item item)
     {
         super(() -> {
             Database db = Database.getInstance();

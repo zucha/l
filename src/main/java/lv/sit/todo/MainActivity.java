@@ -49,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
             ItemAdapter.getInstance().notifyAllRows();
         });
 
+        View undoButton = findViewById(R.id.undoButton);
+
+        undoButton.setOnClickListener((View v) -> Undo.onUndo());
+
         Toast.makeText(this, "App loaded", Toast.LENGTH_SHORT).show();
     }
 

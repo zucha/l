@@ -55,7 +55,15 @@ public class RowSwipeAnimation extends Thread {
         this.view = (View) holder.rowTexView;
         this.buttons = (View) holder.rowLayout.findViewById(R.id.rowButtons);
         pointerX = lastPointerX = x;
-        // Log.d(MainActivity.LOG_TAG, "left: " + view.getLeft() + " right: " + view.getRight());
+    }
+
+    /**
+     * Constructor to draw back to default position
+     */
+    public RowSwipeAnimation (ItemAdapter.ViewHolder holder) {
+        this.holder = holder;
+        this.view = (View) holder.rowTexView;
+        this.buttons = (View) holder.rowLayout.findViewById(R.id.rowButtons);
     }
 
     @Override
@@ -64,16 +72,34 @@ public class RowSwipeAnimation extends Thread {
         active = true;
     }
 
+    /**
+     * Draw onlu back
+     * @see #backToZero()
+     */
+    private boolean justDrawBack = false;
+
+    /**
+     * Draw back to zero
+     */
+    public synchronized void startDrawBack ()
+    {
+        active = false;
+        justDrawBack = true;
+        super.start();
+    }
+
     @Override
     public void run() {
-        Log.d(MainActivity.LOG_TAG, "start run");
+        if (justDrawBack)
+        {
+            backToZero();
+            return;
+        }
 
         do {
             try {
 
                 sleep(20);
-                Log.d(MainActivity.LOG_TAG, "run t " + deltaX());
-
                 drawSwipe ();
             } catch (InterruptedException e)
             {
@@ -91,12 +117,10 @@ public class RowSwipeAnimation extends Thread {
         {
             drawToButtons ();
         }
-
-        Log.d(MainActivity.LOG_TAG, "end run");
     }
 
     /**
-     * stop animation
+     * Stop animation
      */
     public static void setPassive ()
     {
@@ -109,7 +133,6 @@ public class RowSwipeAnimation extends Thread {
      */
     public void setX (float x)
     {
-        // Log.d(MainActivity.LOG_TAG, "set x" + x);
         lastPointerX = x;
     }
 
@@ -259,7 +282,6 @@ public class RowSwipeAnimation extends Thread {
             for (float i = 0.1f; i <= 1.1; i += 0.1f)
             {
                 float alpha = i;
-                Log.d(MainActivity.LOG_TAG, "set alpha: " + alpha);
                 MainActivity.getInstance().runOnUiThread(() -> {
                     buttons.setAlpha( (alpha) );
                 });

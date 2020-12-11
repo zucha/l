@@ -16,7 +16,7 @@ public class DbThreadTest {
     @Test
     public void testThread ()
     {
-        DbThread thread = new DbThread(ApplicationProvider.getApplicationContext(), () -> {
+        DbThread thread = new DbThread(() -> {
             Log.d("TEST", "test complete thread");
             System.out.println("test completed");
             Assert.assertTrue(true);

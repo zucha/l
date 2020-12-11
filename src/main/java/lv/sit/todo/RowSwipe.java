@@ -51,7 +51,6 @@ public class RowSwipe implements View.OnTouchListener {
                 animation.setX(event.getX());
                 break;
             default:
-                Log.d(MainActivity.LOG_TAG, "stop ");
                 RowSwipeAnimation.setPassive();
                 return false;
         }
