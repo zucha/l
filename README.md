@@ -33,3 +33,4 @@ I have some ideas to improve user experience to make it more useable. So i am re
 - Postpone option
 - color for each item
 - create add button with selector
+- bind View.OnTouchListener to all recycler view, not one row (or ignore out).
