@@ -3,13 +3,12 @@ package lv.sit.todo;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- *
+ * Recycler view row swipe helper
  */
 public class OnItemTouchListener implements RecyclerView.OnItemTouchListener {
 
@@ -20,7 +19,7 @@ public class OnItemTouchListener implements RecyclerView.OnItemTouchListener {
     private RowSwipeAnimation animation;
 
     /**
-     * inittial coordinates
+     * Initial coordinates
      */
     private final MotionEvent.PointerCoords initialCoords = new MotionEvent.PointerCoords();
 
@@ -80,7 +79,7 @@ public class OnItemTouchListener implements RecyclerView.OnItemTouchListener {
         float dX = Math.abs(initialCoords.x - e.getX());
         float dY = Math.abs(initialCoords.y - e.getY());
 
-        return dX > 5 && dY < 5;
+        return dX > 5 && dY < 10;
     }
 
     @Override
