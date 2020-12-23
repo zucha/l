@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import lv.sit.todo.db.DbThread;
-import lv.sit.todo.db.DeleteThread;
-import lv.sit.todo.db.Item;
 import lv.sit.todo.db.OrderThread;
 
 public class MainActivity extends AppCompatActivity {
@@ -79,9 +77,16 @@ public class MainActivity extends AppCompatActivity {
         ItemAdapter adapter = ItemAdapter.getInstance();
         recyclerView.setAdapter(adapter);
 
+        recyclerView.addOnItemTouchListener(new OnItemTouchListener());
+
         ItemHelperCallback dragDropCallback = new ItemHelperCallback();
         ItemTouchHelper touchHelper = new ItemTouchHelper(dragDropCallback);
         touchHelper.attachToRecyclerView(recyclerView);
+
+
+        /*recyclerView.setOnClickListener((View v) -> {
+            Log.d(LOG_TAG, "Recycle clicked");
+        });*/
 
         new DbThread(() -> {
             runOnUiThread(() -> {
@@ -93,8 +98,6 @@ public class MainActivity extends AppCompatActivity {
             });
 
             new OrderThread().start();
-
-            return null;
         }).start();
     }
 }

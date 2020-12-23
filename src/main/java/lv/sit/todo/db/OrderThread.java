@@ -1,11 +1,7 @@
 package lv.sit.todo.db;
 
 import android.util.Log;
-import android.widget.Toast;
-
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-
 import lv.sit.todo.ItemAdapter;
 import lv.sit.todo.MainActivity;
 import lv.sit.todo.R;

@@ -6,4 +6,9 @@
     <color name="warning">#FF5722</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="buttonBg">#87D1D1</color>
+    <color name="item1">#195080</color>
+    <color name="item2">#621280</color>
+    <color name="item3">#784611</color>
+    <color name="item4">#1B640E</color>
 </resources>

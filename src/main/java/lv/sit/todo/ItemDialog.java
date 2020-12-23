@@ -1,5 +1,6 @@
 package lv.sit.todo;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +14,6 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.room.Room;
-
 import lv.sit.todo.db.Database;
 import lv.sit.todo.db.Item;
 import lv.sit.todo.db.ItemDao;
@@ -26,7 +25,7 @@ public class ItemDialog extends DialogFragment {
      * if null - create new
      * if not null - updates
      */
-    private Item item;
+    private final Item item;
 
     /**
      * Dialog to create new item
@@ -37,7 +36,7 @@ public class ItemDialog extends DialogFragment {
 
     /**
      * Dialog to update existing item
-     * @param item
+     * @param item dao item to work with
      */
     public ItemDialog(Item item) {
         this.item = item;
@@ -82,7 +81,7 @@ public class ItemDialog extends DialogFragment {
 
         editText.requestFocus();
 
-        InputMethodManager imm = (InputMethodManager) MainActivity.getInstance().getSystemService(MainActivity.getInstance().INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) MainActivity.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         editText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
@@ -112,7 +111,7 @@ public class ItemDialog extends DialogFragment {
     }
 
     /**
-     *
+     * Save item
      */
     private void saveItem (String value) {
         Log.d(MainActivity.LOG_TAG, "save item");
@@ -144,9 +143,7 @@ public class ItemDialog extends DialogFragment {
             ItemAdapter.getInstance().count = itemDao.getCount();
             ItemAdapter.getInstance().items = itemDao.getAll();
 
-            MainActivity.getInstance().runOnUiThread(() -> {
-                ItemAdapter.getInstance().notifyAllRows();
-            });
+            MainActivity.getInstance().runOnUiThread(() -> ItemAdapter.getInstance().notifyAllRows());
 
             new OrderThread().start();
             
@@ -156,22 +153,16 @@ public class ItemDialog extends DialogFragment {
     private void _updateItem (Item item)
     {
         new Thread(() -> {
-            Database db = Room.databaseBuilder(
-                    MainActivity.getInstance().getApplicationContext(),
-                    Database.class,
-                    Database.dbName
-            ).build();
+            Database db = Database.getInstance();
 
             ItemDao itemDao = db.getItemDao();
 
-            itemDao.update(this.item);
+            itemDao.update(item);
 
             // ItemAdapter.getInstance().count = itemDao.getCount();
             ItemAdapter.getInstance().items = itemDao.getAll();
 
-            MainActivity.getInstance().runOnUiThread(() -> {
-                ItemAdapter.getInstance().notifyAllRows();
-            });
+            MainActivity.getInstance().runOnUiThread(() -> ItemAdapter.getInstance().notifyAllRows());
         }).start();
     }
 
@@ -179,7 +170,7 @@ public class ItemDialog extends DialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
 
-        InputMethodManager imm = (InputMethodManager) MainActivity.getInstance().getSystemService(MainActivity.getInstance().INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) MainActivity.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
 }

@@ -133,7 +133,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
             rowTexView = (TextView) itemView.findViewById(R.id.rowTextViewId);
 
-            itemView.setOnTouchListener(new RowSwipe(this));
+            // itemView.setOnTouchListener(new RowSwipe(this));
 
             Button delete = (Button) itemView.findViewById(R.id.deleteButton);
             Button edit = (Button) itemView.findViewById(R.id.editButton);

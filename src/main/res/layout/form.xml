@@ -4,12 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/itemLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:labelFor="@+id/itemName"
+        android:text="@string/item"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/itemName"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/itemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:autofillHints="@string/item_hint"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:focusedByDefault="true"
@@ -17,9 +31,54 @@
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
         android:text=""
-        android:textSize="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="24dp" />/
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@id/itemColors"
+        app:layout_constraintTop_toTopOf="@id/itemLabel"
+        tools:layout_editor_absoluteX="24dp" />
+
+    <LinearLayout
+        android:id="@+id/itemColors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/submitColor1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="0"
+            android:background="@color/item1"
+            android:text="" />
+
+        <Button
+            android:id="@+id/submitColor2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="0"
+            android:background="@color/item2"
+            android:text="" />
+
+        <Button
+            android:id="@+id/submitColor3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="0"
+            android:background="@color/item3"
+            android:text="" />
+
+        <Button
+            android:id="@+id/submitColor4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="0"
+            android:background="@color/item4"
+            android:text="" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,6 @@
 package lv.sit.todo.db;
 
 import android.widget.Toast;
-
-import androidx.room.Room;
-
 import lv.sit.todo.ItemAdapter;
 import lv.sit.todo.MainActivity;
 

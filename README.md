@@ -2,7 +2,7 @@
 
 I created this Project to learn Android, android studio. If you see any bad code practices, feel free to inform me.
 
-I would like to create simple, fast shoping list application with some small features. Main purpose is for daily grocery.
+I would like to create simple, fast shopping list application with some small features. Main purpose is for daily grocery.
 
 At the moment i use [Out of milk](https://play.google.com/store/apps/details?id=com.capigami.outofmilk) app. It is ok, but i 
 think it is too complex and with adverts. So i would make my own app - lean and adjusted for my own shopping experience.
@@ -17,9 +17,10 @@ code you can find some links to tutorials.
 
 ## Swipe rows
 
-Refactored code. Abandoned swipe with ItemTouchHelper.Callback helper to create my own swipe animation. It will help me to show 
-buttons and swipe out the row to procede deletion. Swipe has two tresholds - for menu and swipe to delete. Order move up and 
-down still remains with the helper class.
+Refactored code twice. Abandoned swipe with ItemTouchHelper.Callback helper to create my own swipe animation. It will help me to show
+buttons and swipe out the row to procede deletion. Swipe has two tresholds - for menu and swipe to delete. Order move up and
+down still remains with the helper class. Using RecyclerView.OnItemTouchListener interface which provide more intuitive
+swiping (you can move pointer out of row view).
 
 ## Undo option
 
@@ -32,5 +33,4 @@ I have some ideas to improve user experience to make it more useable. So i am re
 
 - Postpone option
 - color for each item
-- create add button with selector
-- bind View.OnTouchListener to all recycler view, not one row (or ignore out).
+- hide top Toolbar

@@ -1,11 +1,13 @@
 package lv.sit.todo;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * Swipe ItemAdapter row
+ * Swipe ItemAdapter's row
+ * @deprecated
  */
 public class RowSwipe implements View.OnTouchListener {
 
@@ -15,20 +17,9 @@ public class RowSwipe implements View.OnTouchListener {
     private RowSwipeAnimation animation;
 
     /**
-     * View which will be translated
-     */
-    private View swipeView;
-
-    /**
-     * View with action buttons
-     * default hidden
-     */
-    private View buttons;
-
-    /**
      * Item adapter view holder
      */
-    private ItemAdapter.ViewHolder holder;
+    private final ItemAdapter.ViewHolder holder;
 
     /**
      * Constructor
@@ -37,10 +28,12 @@ public class RowSwipe implements View.OnTouchListener {
         this.holder = holder;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        // Log.d(MainActivity.LOG_TAG, "action: " + event.getAction());
+        /*Log.d(MainActivity.LOG_TAG, "action: " + event.getAction());
+        Log.d(MainActivity.LOG_TAG, "actionm: " + event.getActionMasked());*/
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:

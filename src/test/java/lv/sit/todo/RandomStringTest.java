@@ -59,40 +59,13 @@ public class RandomStringTest {
         // Looper
         // Handler
 
-        Thread t = new Thread(() -> {
-            System.out.println("start");
-            try
-            {
+        int x = 0xff;
 
-                //Log.d(MainActivity.LOG_TAG, "start");
-                for (int i = 0; i < 10; i++) {
-                    sleep(100);
-                }
+        int y = 100;
 
+        int z = x & y;
 
-            } catch (InterruptedException e)
-            {
-                System.out.println("interupted 1");
-            }
-
-            System.out.println("end");
-
-        });
-
-        t.start();
-
-        // t.interrupt();
-
-        try
-        {
-            t.join(10000);
-        } catch (InterruptedException e)
-        {
-            System.out.println("interupted 2");
-        }
-
-
-        System.out.println("Ended main");
+        System.out.println("Ended main: " + z);
     }
 
 
