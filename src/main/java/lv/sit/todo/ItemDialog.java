@@ -134,19 +134,27 @@ public class ItemDialog extends DialogFragment {
     private void _insertItem (Item item)
     {
         new Thread(() -> {
+
+            Log.d(MainActivity.LOG_TAG, "thread: " + Thread.currentThread().getName());
             Database db = Database.getInstance();
 
             ItemDao itemDao = db.getItemDao();
 
             itemDao.insert(item);
 
-            ItemAdapter.getInstance().count = itemDao.getCount();
             ItemAdapter.getInstance().items = itemDao.getAll();
+            ItemAdapter.getInstance().count = itemDao.getCount();
 
             MainActivity.getInstance().runOnUiThread(() -> ItemAdapter.getInstance().notifyAllRows());
 
-            new OrderThread().start();
-            
+            OrderThread orderThread = new OrderThread();
+            try {
+                orderThread.join();
+                orderThread.start();
+            } catch (InterruptedException e)
+            {
+                e.getStackTrace();
+            }
         }).start();
     }
 

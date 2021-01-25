@@ -21,12 +21,17 @@ public class OrderThread extends Thread {
 
             RecyclerView recyclerView = MainActivity.getInstance().findViewById(R.id.mainRecycler);
 
+            // recyclerView.findViewHolderForLayoutPosition()
+
             ItemDao itemDao = db.getItemDao();
 
-            for (int i = 0; i < count; i++) {
-                // Log.d(MainActivity.LOG_TAG, "Item position " + i);
+            Log.d(MainActivity.LOG_TAG, "Start order, " + count);
 
-                ItemAdapter.ViewHolder viewHolder = (ItemAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
+            for (int i = 0; i < count; i++) {
+                Log.d(MainActivity.LOG_TAG, "Item position " + i);
+
+                // ItemAdapter.ViewHolder viewHolder = (ItemAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
+                ItemAdapter.ViewHolder viewHolder = (ItemAdapter.ViewHolder) recyclerView.findViewHolderForLayoutPosition(i);
 
                 if (viewHolder == null)
                 {

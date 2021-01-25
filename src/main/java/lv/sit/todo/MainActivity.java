@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
         registerFormActions ();
 
         Button b = findViewById(R.id.testButton);
-        b.setOnClickListener((View v) -> {
-            ItemAdapter.getInstance().notifyAllRows();
-        });
+        b.setOnClickListener((View v) ->
+            ItemAdapter.getInstance().notifyAllRows()
+        );
 
         View undoButton = findViewById(R.id.undoButton);
 
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void registerFormActions ()
     {
-        ImageButton buttonOpen = (ImageButton) findViewById(R.id.buttonOpenForm);
+        ImageButton buttonOpen = findViewById(R.id.buttonOpenForm);
 
         buttonOpen.setOnClickListener((View b) -> {
             FragmentManager fm = getSupportFragmentManager();
@@ -89,13 +89,11 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
         new DbThread(() -> {
-            runOnUiThread(() -> {
-                ItemAdapter.getInstance().notifyDataSetChanged();
-            });
+            runOnUiThread(() -> ItemAdapter.getInstance().notifyDataSetChanged() );
 
-            runOnUiThread(() -> {
-                Toast.makeText(getApplicationContext(), "Data loaded", Toast.LENGTH_SHORT).show();
-            });
+            runOnUiThread(() ->
+                Toast.makeText(getApplicationContext(), "Data loaded", Toast.LENGTH_SHORT).show()
+            );
 
             new OrderThread().start();
         }).start();

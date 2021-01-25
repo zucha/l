@@ -79,7 +79,8 @@ public class OnItemTouchListener implements RecyclerView.OnItemTouchListener {
         float dX = Math.abs(initialCoords.x - e.getX());
         float dY = Math.abs(initialCoords.y - e.getY());
 
-        return dX > 5 && dY < 10;
+        return dX > dY;
+        // return dX > 5 && dY < 10;
     }
 
     @Override

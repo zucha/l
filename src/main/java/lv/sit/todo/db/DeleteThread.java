@@ -1,9 +1,14 @@
 package lv.sit.todo.db;
 
+import android.util.Log;
 import android.widget.Toast;
 import lv.sit.todo.ItemAdapter;
 import lv.sit.todo.MainActivity;
+import lv.sit.todo.Undo;
 
+/**
+ * Delete one Item
+ */
 public class DeleteThread extends Thread {
     /**
      * @param item database item
@@ -14,6 +19,8 @@ public class DeleteThread extends Thread {
             Database db = Database.getInstance();
 
             ItemDao itemDao = db.getItemDao();
+
+            Log.d(Undo.TAG, "delete thread " + item.id);
 
             itemDao.delete(item);
 

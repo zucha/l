@@ -19,8 +19,10 @@ public class DbThread extends Thread {
 
             ItemDao itemDao = db.getItemDao();
 
-            ItemAdapter.getInstance().count = itemDao.getCount();
+            itemDao.deleteMarked();
+
             ItemAdapter.getInstance().items = itemDao.getAll();
+            ItemAdapter.getInstance().count = itemDao.getCount();
 
             onComplete(v);
         });

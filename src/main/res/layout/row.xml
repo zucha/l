@@ -20,6 +20,18 @@
         android:translationX="0px"
         android:visibility="visible" />
 
+    <Button
+        android:id="@+id/deleteButtonTmp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="clip_vertical|right"
+        android:layout_weight="1"
+        android:layout_gravity="right"
+        android:background="@drawable/ic_delete"
+        android:visibility="visible" />
+
     <LinearLayout
         android:id="@+id/rowButtons"
         android:layout_width="wrap_content"

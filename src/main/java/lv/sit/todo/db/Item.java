@@ -17,5 +17,11 @@ public class Item
     public int position = 0;
 
     @ColumnInfo(name = "color")
-    public String color;
+    public int color;
+
+    @ColumnInfo(name = "delete_mark")
+    public int delete;
+
+    @ColumnInfo(name = "postpone")
+    public int postpone;
 }

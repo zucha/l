@@ -10,10 +10,10 @@ import java.util.List;
 
 @Dao
 public interface ItemDao {
-    @Query("SELECT count(*) FROM item;")
+    @Query("SELECT count(*) FROM item WHERE delete_mark=0;")
     int getCount();
 
-    @Query("SELECT * FROM item ORDER BY position;")
+    @Query("SELECT * FROM item WHERE delete_mark=0 ORDER BY position;")
     List<Item> getAll();
 
     @Query("SELECT * FROM item where id=:id;")
@@ -27,4 +27,7 @@ public interface ItemDao {
 
     @Update
     public void update(Item... items);
+
+    @Query("DELETE FROM item WHERE delete_mark=1;")
+    public void deleteMarked ();
 }

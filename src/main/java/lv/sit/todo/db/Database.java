@@ -4,7 +4,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-
 import lv.sit.todo.MainActivity;
 
 /**
@@ -12,12 +11,12 @@ import lv.sit.todo.MainActivity;
  * TODO public abstract class Database extends RoomDatabase {
  *                 ^
  */
-@androidx.room.Database(entities = {Item.class}, version = 2)
+@androidx.room.Database(entities = {Item.class}, version = 3)
 public abstract class Database extends RoomDatabase {
     /**
      * Database name
      */
-    public static final String dbName = "test";
+    public static final String dbName = "items";
 
     /**
      *
@@ -30,7 +29,7 @@ public abstract class Database extends RoomDatabase {
      */
     public static Database getInstance ()
     {
-        final Migration migration1_2 = new Migration(1, 2) {
+/*        final Migration migration1_2 = new Migration(1, 2) {
             @Override
             public void migrate (SupportSQLiteDatabase database)
             {
@@ -42,11 +41,28 @@ public abstract class Database extends RoomDatabase {
             }
         };
 
+        final Migration migration2_3 = new Migration(2, 3) {
+            @Override
+            public void migrate (SupportSQLiteDatabase database)
+            {
+                database.execSQL("ALTER TABLE item RENAME COLUMN \"color\" TO tmp_color;");
+
+                database.execSQL("ALTER TABLE item "
+                        + " ADD COLUMN color INTEGER DEFAULT 0 NOT NULL;");
+
+                database.execSQL("ALTER TABLE item "
+                        + " ADD COLUMN delete_mark INTEGER DEFAULT 0 NOT NULL;");
+
+                database.execSQL("ALTER TABLE item "
+                        + " ADD COLUMN postpone INTEGER DEFAULT 0 NOT NULL;");
+            }
+        };*/
+
         return Room.databaseBuilder(
                 MainActivity.getInstance().getApplicationContext(),
                 Database.class,
                 Database.dbName)
-                .addMigrations(migration1_2)
+                // .addMigrations(migration1_2, migration2_3)
                 .build();
     }
 }

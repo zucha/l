@@ -1,5 +1,6 @@
 package lv.sit.todo;
 
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 
@@ -9,19 +10,19 @@ import android.view.View;
 public class RowSwipeAnimation extends Thread {
 
     /**
-     * threshold to view menu
+     * Threshold to view menu
      */
     private final static int MENU_THRESHOLD = 150;
 
     /**
      * Swipeapble view
      */
-    private View view;
+    private final View view;
 
     /**
      * Group of buttons
      */
-    private View buttons;
+    private final View buttons;
 
     /**
      * last finger pointer
@@ -45,7 +46,10 @@ public class RowSwipeAnimation extends Thread {
 
     private int _tmpVelocity = velocity;
 
-    private ItemAdapter.ViewHolder holder;
+    /**
+     * Viewholder
+     */
+    private final ItemAdapter.ViewHolder holder;
 
     /**
      * Constructor
@@ -107,10 +111,11 @@ public class RowSwipeAnimation extends Thread {
             }
         } while (active);
 
+
         if (view.getTranslationX() < MENU_THRESHOLD)
         {
             backToZero ();
-        } else if (view.getTranslationX() > (view.getWidth() / 2))
+        } else if (view.getTranslationX() > ( MENU_THRESHOLD * 2) )
         {
             swipeToDelete ();
         } else
@@ -129,7 +134,7 @@ public class RowSwipeAnimation extends Thread {
 
     /**
      * Set pointer to move
-     * @param x
+     * @param x position to draw
      */
     public void setX (float x)
     {
@@ -138,7 +143,7 @@ public class RowSwipeAnimation extends Thread {
 
     /**
      *
-     * @return
+     * @return calculate delta between previous and target destination
      */
     private float deltaX ()
     {
@@ -194,7 +199,7 @@ public class RowSwipeAnimation extends Thread {
     }
 
     /**
-     * @return
+     * @return velocity increases each step
      */
     private int getVelocity ()
     {
@@ -288,7 +293,7 @@ public class RowSwipeAnimation extends Thread {
 
                 try
                 {
-                    this.sleep(10);
+                    sleep(10);
                 } catch (InterruptedException e)
                 {
                     MainActivity.getInstance().runOnUiThread(() -> {

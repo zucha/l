@@ -88,8 +88,21 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             return true;
         });*/
 
+        Log.d(MainActivity.LOG_TAG, "Items total: " + items.size());
+        Log.d(MainActivity.LOG_TAG, "Bind position: " + position);
+
         holder.item = items.get(position);
         holder.rowTexView.setText(holder.item.name);
+
+        View rowLayout = holder.rowLayout;
+        ViewGroup.LayoutParams params = rowLayout.getLayoutParams();
+
+        params.height = getDefaultRowHeight();
+        rowLayout.setLayoutParams(params);
+        holder.rowTexView.setTranslationX(0);
+
+        View buttons = rowLayout.findViewById(R.id.rowButtons);
+        buttons.setVisibility(View.GONE);
     }
 
     @Override
@@ -151,13 +164,21 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
                 new RowSwipeAnimation(this).startDrawBack();
             });
+
+            // tmp delete button
+            Button deleteTmp = (Button) itemView.findViewById(R.id.deleteButtonTmp);
+
+            deleteTmp.setOnClickListener((View v) -> {
+                // new DeleteThread(item).start();
+                Undo.set(this, item);
+            });
         }
 
         /**
          * When row is swiped out of view to delete item
          */
         public void onSwipeDelete() {
-            Undo.set(this);
+            Undo.set(this, this.item);
         }
     }
 
@@ -169,7 +190,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
      * @see RecyclerView.Adapter#notifyDataSetChanged()
      */
     public void notifyAllRows() {
-        RecyclerView recyclerView = (RecyclerView) MainActivity.getInstance().findViewById(R.id.mainRecycler);
+/*        RecyclerView recyclerView = (RecyclerView) MainActivity.getInstance().findViewById(R.id.mainRecycler);
         for (int i = 0; i < items.size(); i++) {
             ItemAdapter.ViewHolder holder = (ItemAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
 
@@ -182,7 +203,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
             holder.expanded = false;
             this.notifyItemChanged(i);
-        }
+        }*/
 
         this.notifyDataSetChanged();
     }

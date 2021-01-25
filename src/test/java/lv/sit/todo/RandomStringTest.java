@@ -22,6 +22,14 @@ import lv.sit.todo.db.Item;
 public class RandomStringTest {
 
     @Test
+    public void testDivide ()
+    {
+        //Math.floorDiv();
+
+        assertEquals(1, Math.floorDiv(5, 4));
+    }
+
+    @Test
     public void testNull ()
     {
         Item item = null; //= new Item();
