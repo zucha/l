@@ -142,8 +142,7 @@ public class ItemDialog extends DialogFragment {
 
             itemDao.insert(item);
 
-            ItemAdapter.getInstance().items = itemDao.getAll();
-            ItemAdapter.getInstance().count = itemDao.getCount();
+            ItemAdapter.getInstance().items = db.getAll();
 
             MainActivity.getInstance().runOnUiThread(() -> ItemAdapter.getInstance().notifyAllRows());
 
@@ -167,8 +166,7 @@ public class ItemDialog extends DialogFragment {
 
             itemDao.update(item);
 
-            // ItemAdapter.getInstance().count = itemDao.getCount();
-            ItemAdapter.getInstance().items = itemDao.getAll();
+            ItemAdapter.getInstance().items = db.getAll();
 
             MainActivity.getInstance().runOnUiThread(() -> ItemAdapter.getInstance().notifyAllRows());
         }).start();

@@ -2,9 +2,11 @@ package lv.sit.todo;
 
 import java.util.Date;
 
+/**
+ * Calculate time to pospone item preview
+ */
 public class Time {
     /**
-     *
      * @return current time
      */
     public long currentTime ()

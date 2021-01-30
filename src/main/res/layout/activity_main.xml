@@ -22,7 +22,10 @@
         android:src="@drawable/ic_bag_round_plus"
         android:translationZ="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/mainRecycler" />
+        app:layout_constraintEnd_toEndOf="@+id/mainRecycler"
+        app:layout_constraintEnd_toStartOf="@+id/mainRecycler"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/mainRecycler" />
 
     <include
         android:id="@+id/itemForm"

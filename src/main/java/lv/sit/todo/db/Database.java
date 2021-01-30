@@ -4,7 +4,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+import java.util.List;
 import lv.sit.todo.MainActivity;
+import lv.sit.todo.Time;
 
 /**
  * TODO /home/uldis/AndroidStudioProjects/TodoList/app/src/main/java/lv/sit/todo/db/Database.java:11: warning: Schema export directory is not provided to the annotation processor so we cannot export the schema. You can either provide `room.schemaLocation` annotation processor argument OR set exportSchema to false.
@@ -64,5 +66,14 @@ public abstract class Database extends RoomDatabase {
                 Database.dbName)
                 // .addMigrations(migration1_2, migration2_3)
                 .build();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<Item> getAll () {
+        Time time = new Time();
+        return getInstance().getItemDao().getAll(time.currentTime());
     }
 }

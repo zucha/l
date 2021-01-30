@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+
+import lv.sit.todo.db.PostponeThread;
 import lv.sit.todo.db.DeleteThread;
 import lv.sit.todo.db.Item;
 
@@ -22,12 +24,13 @@ import lv.sit.todo.db.Item;
  */
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     /**
-     * Signleton instance
+     * Singleton instance
      */
     private static ItemAdapter instance;
 
-    public int count = 0;
-
+    /**
+     * Items
+     */
     public List<Item> items;
 
     /**
@@ -107,7 +110,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return this.count;
+        if (this.items == null)
+        {
+            return 0;
+        }
+
+        return this.items.size();
     }
 
     /**
@@ -150,6 +158,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
             Button delete = (Button) itemView.findViewById(R.id.deleteButton);
             Button edit = (Button) itemView.findViewById(R.id.editButton);
+            Button delay = (Button) itemView.findViewById(R.id.delayButton);
 
             delete.setOnClickListener((View v) -> {
                 Log.d(MainActivity.LOG_TAG, "On delete callback: " + item.id);
@@ -165,12 +174,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 new RowSwipeAnimation(this).startDrawBack();
             });
 
+            delay.setOnClickListener((View v) -> {
+                new PostponeThread(item).start();
+            });
+
             // tmp delete button
             Button deleteTmp = (Button) itemView.findViewById(R.id.deleteButtonTmp);
 
             deleteTmp.setOnClickListener((View v) -> {
-                // new DeleteThread(item).start();
-                Undo.set(this, item);
+                new DeleteThread(item).start();
+                // Undo.set(this, item);
             });
         }
 

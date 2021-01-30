@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
+import lv.sit.todo.Time;
 import lv.sit.todo.db.Database;
 import lv.sit.todo.db.ItemDao;
 
@@ -42,9 +43,7 @@ public class ItemTest {
     @Test
     public void testCreate ()
     {
-        Assert.assertEquals(0, itemDao.getCount());
-
-        List<Item> items = itemDao.getAll();
+        List<Item> items = Database.getInstance().getAll();
 
         Assert.assertEquals(0, items.size());
 
@@ -53,7 +52,7 @@ public class ItemTest {
 
         itemDao.insert(item);
 
-        items = itemDao.getAll();
+        items = Database.getInstance().getAll();
 
         Assert.assertEquals(1, items.size());
     }

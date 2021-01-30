@@ -24,8 +24,7 @@ public class DeleteThread extends Thread {
 
             itemDao.delete(item);
 
-            ItemAdapter.getInstance().items = itemDao.getAll();
-            ItemAdapter.getInstance().count = itemDao.getCount();
+            ItemAdapter.getInstance().items = Database.getInstance().getAll();
 
             MainActivity.getInstance().runOnUiThread(() -> {
                 ItemAdapter.getInstance().notifyAllRows();

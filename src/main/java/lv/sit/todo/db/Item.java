@@ -23,5 +23,5 @@ public class Item
     public int delete;
 
     @ColumnInfo(name = "postpone")
-    public int postpone;
+    public long postpone;
 }

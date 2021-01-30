@@ -27,10 +27,15 @@ swiping (you can move pointer out of row view).
 If row is swiped to delete, undo view appears at the botton of the screen. So if you swiped row out accidentaly there is option 
 to undo action. This feature i made with touch gestures (View.OnTouchListener) and threads to make animation.
 
+## Postpone option
+
+If your purchase item at the current time is not actual. You can postpone it for one hour. It will disapear from the list and 
+later will be available again.
+
 ## What is next
 
 I have some ideas to improve user experience to make it more useable. So i am ready to go forward, to learn little bit more.
 
-- Postpone option
+- need to refactore undo, at the moment it is crashing and is some ideas how to improve
 - color for each item
 - hide top Toolbar

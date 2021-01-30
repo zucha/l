@@ -55,6 +55,15 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/ic_delete"
             android:visibility="visible" />
+
+        <Button
+            android:id="@+id/delayButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/ic_stopwatch"
+            android:visibility="visible" />
     </LinearLayout>
 
 </FrameLayout>

@@ -5,16 +5,12 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
-
 import java.util.List;
 
 @Dao
 public interface ItemDao {
-    @Query("SELECT count(*) FROM item WHERE delete_mark=0;")
-    int getCount();
-
-    @Query("SELECT * FROM item WHERE delete_mark=0 ORDER BY position;")
-    List<Item> getAll();
+    @Query("SELECT * FROM item WHERE delete_mark=0 AND postpone<=:time ORDER BY position;")
+    List<Item> getAll(long time);
 
     @Query("SELECT * FROM item where id=:id;")
     Item findOne (int id);

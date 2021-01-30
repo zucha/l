@@ -73,8 +73,7 @@ public class Undo extends Thread {
         item.delete = 1;
         itemDao.update(item);
 
-        ItemAdapter.getInstance().items = itemDao.getAll();
-        ItemAdapter.getInstance().count = itemDao.getCount();
+        ItemAdapter.getInstance().items = Database.getInstance().getAll();
 
         try
         {
@@ -87,8 +86,7 @@ public class Undo extends Thread {
             item.delete = 0;
             itemDao.update(item);
 
-            ItemAdapter.getInstance().items = itemDao.getAll();
-            ItemAdapter.getInstance().count = itemDao.getCount();
+            ItemAdapter.getInstance().items = Database.getInstance().getAll();
         }
 
         new HideUndo ().start();
