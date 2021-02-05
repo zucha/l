@@ -106,6 +106,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         View buttons = rowLayout.findViewById(R.id.rowButtons);
         buttons.setVisibility(View.GONE);
+
+        View backgroundColor = rowLayout.findViewById(R.id.rowColor);
+        backgroundColor.setBackgroundColor(holder.item.color);
     }
 
     @Override

@@ -14,11 +14,17 @@
         android:layout_weight="1"
         android:background="@drawable/bg_row_background"
         android:gravity="center_vertical"
-        android:paddingLeft="10dp"
+        android:paddingLeft="15dp"
         android:text="TextView"
         android:textSize="26sp"
         android:translationX="0px"
         android:visibility="visible" />
+
+    <View
+        android:id="@+id/rowColor"
+        android:layout_width="5dp"
+        android:layout_height="match_parent"
+        android:background="@color/warning" />
 
     <Button
         android:id="@+id/deleteButtonTmp"

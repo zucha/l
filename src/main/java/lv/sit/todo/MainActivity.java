@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Open dialog to edit item
      */
-    private void registerFormActions ()
-    {
+    private void registerFormActions() {
         ImageButton buttonOpen = findViewById(R.id.buttonOpenForm);
 
         buttonOpen.setOnClickListener((View b) -> {

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,24 +42,27 @@ public class ItemDialog extends DialogFragment {
     public ItemDialog(Item item) {
         this.item = item;
     }
-/*    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setPositiveButton("Save", (dialog, which) -> {
-            // DialogInterface.onClick
-            Log.d(MainActivity.LOG_TAG, "Dialog clicked");
-        });
-
-        return alertDialogBuilder.create();
-        // return super.onCreateDialog(savedInstanceState);
-    }*/
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.form, container);
-        // return super.onCreateView(inflater, container, savedInstanceState);
+        Log.d(MainActivity.LOG_TAG, "onCreateView");
+        View view = inflater.inflate(R.layout.form, container);
+
+        Preferences preferences = new Preferences();
+
+        selectedColor = view.findViewById(preferences.selectedButtonId());
+
+        view.addOnLayoutChangeListener( (View v, int left, int top, int right, int bottom,
+                                         int oldLeft, int oldTop, int oldRight, int oldBottom) -> {
+            Log.d(MainActivity.LOG_TAG, "onCreateView layout change");
+            Log.d(MainActivity.LOG_TAG, "left: " + left);
+            Log.d(MainActivity.LOG_TAG, "right: " + right);
+
+            _moveSelectedButton(selectedColor, selectedColorBackground, false);
+        });
+
+        return view;
     }
 
     @Override
@@ -76,6 +80,8 @@ public class ItemDialog extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Log.d(MainActivity.LOG_TAG, "onViewCreated");
 
         EditText editText = view.findViewById(R.id.itemName);
 
@@ -108,6 +114,22 @@ public class ItemDialog extends DialogFragment {
         {
             editText.setText(item.name);
         }
+
+        View selectedButton = selectedColorBackground = view.findViewById(R.id.selectedColor);
+
+        // selectedColor =
+
+        Button color1 = (Button) view.findViewById(R.id.submitColor1);
+        color1.setOnClickListener((View v) -> _setColor (v, selectedButton));
+
+        Button color2 = (Button) view.findViewById(R.id.submitColor2);
+        color2.setOnClickListener((View v) -> _setColor (v, selectedButton));
+
+        Button color3 = (Button) view.findViewById(R.id.submitColor3);
+        color3.setOnClickListener((View v) -> _setColor (v, selectedButton));
+
+        Button color4 = (Button) view.findViewById(R.id.submitColor4);
+        color4.setOnClickListener((View v) -> _setColor (v, selectedButton));
     }
 
     /**
@@ -116,15 +138,21 @@ public class ItemDialog extends DialogFragment {
     private void saveItem (String value) {
         Log.d(MainActivity.LOG_TAG, "save item");
 
+        Preferences preferences = new Preferences();
+
         if (this.item == null)
         {
             Item item = new Item();
             item.name = value;
 
+            item.color = preferences.selectedButtonColor();
+
             _insertItem (item);
         } else
         {
             this.item.name = value;
+            this.item.color = preferences.selectedButtonColor();
+
             _updateItem (this.item);
         }
 
@@ -178,5 +206,55 @@ public class ItemDialog extends DialogFragment {
 
         InputMethodManager imm = (InputMethodManager) MainActivity.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+    }
+
+    // onActivityCreated(@Nullable Bundle savedInstanceState) {
+    private View selectedColor;
+    private View selectedColorBackground;
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        Log.d(MainActivity.LOG_TAG, "onViewStateRestored");
+        Log.d(MainActivity.LOG_TAG, "onViewStateRestored left:" + selectedColor.getLeft());
+    }
+
+    /**
+     * Store color, move
+     * get view x position
+     * @param view
+     */
+    private void _setColor(View view, View selectedColor) {
+        Preferences preferences = new Preferences();
+
+        preferences.setButtonId(view.getId());
+
+        _moveSelectedButton(view, selectedColor, true);
+    }
+
+    /**
+     * Background color highlight move to active color
+     * @param moveTo
+     * @param selectedColor
+     */
+    private void _moveSelectedButton(View moveTo, View selectedColor, boolean animate) {
+
+        Log.d(MainActivity.LOG_TAG, "Move to id: " + moveTo.getId());
+        Log.d(MainActivity.LOG_TAG, "Left: " + moveTo.getLeft());
+
+        float density = MainActivity.getInstance().getResources().getDisplayMetrics().density;
+
+        int left = moveTo.getLeft();
+
+        left -= (int) density * 5;
+
+        if (animate)
+        {
+            selectedColor.animate().translationX(left);
+        } else
+        {
+            selectedColor.setTranslationX( left );
+        }
     }
 }

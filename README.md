@@ -32,10 +32,13 @@ to undo action. This feature i made with touch gestures (View.OnTouchListener) a
 If your purchase item at the current time is not actual. You can postpone it for one hour. It will disapear from the list and 
 later will be available again.
 
+## Background colors
+
+Each item has color. You can choose one of four predefined colors to distribute by departments and etc.
+
 ## What is next
 
 I have some ideas to improve user experience to make it more useable. So i am ready to go forward, to learn little bit more.
 
 - need to refactore undo, at the moment it is crashing and is some ideas how to improve
-- color for each item
 - hide top Toolbar
